@@ -4,10 +4,26 @@ using UnityEngine;
 
 public class Target : MonoBehaviour
 {
+    private Rigidbody targetRb;
+
+    private float minSpeed = 12;
+    private float maxSpeed = 16;
+    private float maxTorque = 10;
+    private float xRange = 4;
+    private float ySpawnPosition = -6;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        targetRb = GetComponent<Rigidbody>();
+
+        // Force target to up on random between Random Range
+        targetRb.AddForce(RandomForce(), ForceMode.Impulse);
+
+        // make Target rotate random x, y, z
+        targetRb.AddTorque(RandomTorque(), RandomTorque(), RandomTorque(), ForceMode.Impulse);
+
+        transform.position = RandomSpawnPosition();
     }
 
     // Update is called once per frame
@@ -15,4 +31,21 @@ public class Target : MonoBehaviour
     {
         
     }
+
+    Vector3 RandomForce()
+    {
+        // Force target to up on random between Random Range
+        return Vector3.up * Random.Range(minSpeed, maxSpeed);
+    }
+
+    float RandomTorque()
+    {
+        return Random.Range(-maxTorque, maxTorque);
+    }
+
+    Vector3 RandomSpawnPosition()
+    {
+        // spawn random position
+        return new Vector3(Random.Range(-xRange, xRange), ySpawnPosition, 0);
+    }    
 }
